@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 require('dotenv').config();
-const routerL = require('./src/routes/libraryRouter')
+const routerB = require('./src/routes/bookRouter')
 const routerU = require('./src/routes/userRouter')
 const mongoose = require('mongoose');
 
@@ -9,11 +9,15 @@ const mongoose = require('mongoose');
 
 app.use(express.json()); 
 
-app.use(routerL)
+app.use('/book',routerB)
 app.use('/user',routerU)
 
 app.get('/', (req, res) => {
     res.send(`<h1> I am from root </h1>`)
+})
+
+app.get('*', (req, res) => {
+    res.send(`<h1> Enter right url </h1>`)
 })
 
 

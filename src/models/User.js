@@ -22,6 +22,8 @@ const userSchema = new Schema({
     password: String,
     
     repassword: String,
+
+    
 })
 
 module.exports = model('User',userSchema)

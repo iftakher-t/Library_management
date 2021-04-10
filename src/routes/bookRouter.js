@@ -6,7 +6,7 @@ const {
     oneBookInsertController,
     manyBookInsertController,
     bookDeleteController,
-    } = require('../controllers/libraryController')
+    } = require('../controllers/bookController')
 
     router.get('/', allBookGetController)
     router.get('/:id', uniqueBookGetController)

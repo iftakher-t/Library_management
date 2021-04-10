@@ -1,6 +1,6 @@
 const {Schema, model}= require('mongoose')
 
-const librarySchema = new Schema({
+const bookSchema = new Schema({
     
    bookName: String,
 
@@ -16,4 +16,4 @@ const librarySchema = new Schema({
     isDeleted:{ type: Boolean, default: false},    
 })
 
-module.exports = model('Library',librarySchema)
+module.exports = model('Library',bookSchema)

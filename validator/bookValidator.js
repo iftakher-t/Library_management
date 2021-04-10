@@ -1,7 +1,7 @@
 
 const Joi = require('joi');
 
-const libraryValidator = Joi.object({
+const bookValidator = Joi.object({
     userName: Joi.string().required()
         .alphanum().min(4).max(30).required(),
     userType: Joi.string(),
@@ -23,5 +23,5 @@ const options = {
 }
 
 module.exports = {
-    libraryValidator, options
+    bookValidator, options
 }

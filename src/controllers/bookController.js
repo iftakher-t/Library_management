@@ -1,6 +1,6 @@
 // const { required } = require("joi")
 
-const Library = require('../models/Library')
+const Library = require('../models/Book')
 
 const allBookGetController = async (req ,res)=>{
     try{

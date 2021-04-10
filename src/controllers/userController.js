@@ -1,5 +1,8 @@
 const User = require('../models/User')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+const { userValidator ,options } = require('../../validator/userValidator')
+
 
 const allUserGetController = async (req,res)=>{
     try{
@@ -31,6 +34,14 @@ const uniqueUserGetController = async (req,res)=>{
 
 const userRegisterController = async (req,res)=>{
     try{
+        const {error, value }= userValidator.validate(req.body)
+        if(error){
+            res.status(500).json({
+                result: data,
+                message: 'validation error',
+                Error: error.details[0].message
+            })
+        }
         const {userName, userType, isActive, email, password }= req.body
 
         const hashPass = await bcrypt.hash(password, 10)
@@ -59,7 +70,11 @@ const userLoginController = async (req,res)=>{
         const user = await User.findOne({ email })
         if(user){
             const isValid = await bcrypt.compare(password, user.password)
-
+            
+            let data ={
+                userName : user.userName,
+                userType : user.userType
+            }
             res.status(200).json({
                 result: data
             })
