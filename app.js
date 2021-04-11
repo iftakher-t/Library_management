@@ -3,14 +3,16 @@ const app = express();
 require('dotenv').config();
 const routerB = require('./src/routes/bookRouter')
 const routerU = require('./src/routes/userRouter')
+const routerF = require('./src/routes/fileuploadeRouter')
 const mongoose = require('mongoose');
 
 // require all routers 
 
 app.use(express.json()); 
 
-app.use('/book',routerB)
-app.use('/user',routerU)
+app.use('/book', routerB)
+app.use('/user', routerU)
+app.use('/upload', routerF)
 
 app.get('/', (req, res) => {
     res.send(`<h1> I am from root </h1>`)

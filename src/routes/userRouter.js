@@ -1,5 +1,6 @@
 const router = require('express').Router()
-
+const fileuploader = require('../../middleware/Fileuploder')
+  
 const { 
     allUserGetController,
     uniqueUserGetController,
@@ -12,7 +13,7 @@ const {
     router.get('/', allUserGetController)
     router.get('/', uniqueUserGetController)
 
-    router.post('/register', userRegisterController)
+    router.post('/register',fileuploader.single('image'), userRegisterController)  
     router.post('/login', userLoginController)
     // router.post('/', adminController)
 

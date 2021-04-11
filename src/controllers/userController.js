@@ -35,14 +35,16 @@ const uniqueUserGetController = async (req,res)=>{
 const userRegisterController = async (req,res)=>{
     try{
         const {error, value }= userValidator.validate(req.body)
+        console.log('error', error);
+        console.log('value', value);
         if(error){
             res.status(500).json({
-                result: data,
+                result: value,
                 message: 'validation error',
                 Error: error.details[0].message
             })
-        }
-        const {userName, userType, isActive, email, password }= req.body
+        }else{
+        const {userName, userType, isActive, email, password  }= req.body
 
         const hashPass = await bcrypt.hash(password, 10)
 
@@ -55,7 +57,9 @@ const userRegisterController = async (req,res)=>{
                 result: data,
                 message: 'user saved successfully'
             })
+        }
     }catch(err){
+        console.log(err)
         res.status(500).json({
             message : "server error",
             err
@@ -66,20 +70,36 @@ const userRegisterController = async (req,res)=>{
 const userLoginController = async (req,res)=>{
     try{
         const {email, password }= req.body
-
+        const secretKey = process.env.JWT_SECRETE;
         const user = await User.findOne({ email })
-        if(user){
-            const isValid = await bcrypt.compare(password, user.password)
-            
-            let data ={
-                userName : user.userName,
-                userType : user.userType
+
+        if (user) {
+            const isValid = await bcrypt.compare(password, user.password);
+            let data = {
+                userName: user.userName,
+                userType: user.userType
             }
-            res.status(200).json({
-                result: data
+            const token = jwt.sign(data, secretKey, { expiresIn: '1h' })
+            if (isValid) {
+                res.json({
+                    message: "Login successfull",
+                    token
+                })
+            }
+            else {
+                res.json({
+                    message: "password doesn't match"
+                })
+            }
+        }
+        else {
+            res.json({
+                message: "User not found"
             })
         }
-    }catch(err){
+    }
+    catch(err){
+        console.log("Error: ", error);
         res.status(500).json({
             message : "server error",
             err

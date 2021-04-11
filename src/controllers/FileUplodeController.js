@@ -1,12 +1,19 @@
 
 
-const fileUplodeController = async (req,res) =>{
+const singleUplodeController = async (req,res) =>{
     console.log(req.file);
-    res.send('File upload successfully')
+    res.send('image upload successfully')
+
+}
+
+const multipleUplodeController = async (req,res) =>{
+    console.log(req.files);
+    res.send('images upload successfully')
 
 }
 
 module.exports = {
-    fileUplodeController
+    singleUplodeController,
+    multipleUplodeController
 }
 
