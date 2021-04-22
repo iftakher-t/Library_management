@@ -1,20 +1,42 @@
 const multer = require('multer')
-const path = require ('path')
+const fs = require ('fs')
 
 // Set storage engine
 const fileStorage = multer.diskStorage({
-    destination:(req, file, cb)=>{
-        // set folder
-        cb(null, './images')
+
+    destination : function(req,file, cb){
+        var dir = "./uploads/images"
+        if(!fs.existsSync(dir)){
+            fs.mkdirSync(dir)
+        }
+        cb(null, dir)
     },
+
+    // destination: function (req, file, cb){
+    //     // set folder
+    //     cb(null, './images')
+    // },
     fileName : (req, file, cb)=>{
-        cb(null, Date.now()+'-'+file.originalname)
+        cb(null, Date.now() + '-' + file.originalname)
     }
 })
 
-const fileuploader = multer({ 
-    storage : fileStorage ,
-    limits : { fileSize : 1024*1024*5 }
-})
 
+// Init upload
+const fileuploader = multer({
+    storage:fileStorage,
+    limits : { fileSize : 1024*1024*5 },
+
+    fileFilter:(req, file, cb) => {
+    let exAsArray = file.mimetype.split("/") ;
+    let extention = exAsArray[exAsArray.length - 1]
+    if(extention == "jpg" || extention == "jpeg"){
+        cb(null, true)
+    }else{
+        cb(new Error("only jpg and jpeg files are allowed"))
+    }
+}
+
+})
+ 
 module.exports = fileuploader

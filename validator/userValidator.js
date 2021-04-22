@@ -1,6 +1,14 @@
 
 const Joi = require('joi');
 
+const addressSchema = Joi.object({
+    division : Joi.string(),
+    destrict : Joi.string(),
+    upozila : Joi.string(),
+    zipcode : Joi.string(),
+    area : Joi.string()
+})
+
 const userValidator = Joi.object({
     userName: Joi.string().required()
     .alphanum().min(4).max(15),

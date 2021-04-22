@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express();
 require('dotenv').config();
-const routerB = require('./src/routes/bookRouter')
+
+const routerL = require('./src/routes/libraryRouter')
 const routerU = require('./src/routes/userRouter')
 const routerF = require('./src/routes/fileuploadeRouter')
 const mongoose = require('mongoose');
@@ -10,7 +11,7 @@ const mongoose = require('mongoose');
 
 app.use(express.json()); 
 
-app.use('/book', routerB)
+app.use('/librayr', routerL)
 app.use('/user', routerU)
 app.use('/upload', routerF)
 

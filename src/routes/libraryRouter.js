@@ -1,6 +1,7 @@
 
 const router = require ('express').Router()
 const { 
+    createLibraryController,
     allBookGetController,
     uniqueBookGetController,
     oneBookInsertController,
@@ -8,6 +9,7 @@ const {
     bookDeleteController,
     } = require('../controllers/bookController')
 
+    router.get('/', createLibraryController)
     router.get('/', allBookGetController)
     router.get('/:id', uniqueBookGetController)
 
