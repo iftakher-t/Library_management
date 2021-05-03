@@ -1,5 +1,7 @@
 
 const router = require ('express').Router()
+const fileUpLoader = require('../../middleware/fileUpLoader')
+
 const { 
     createLibraryController,
     allBookGetController,
@@ -7,11 +9,13 @@ const {
     oneBookInsertController,
     manyBookInsertController,
     bookDeleteController,
+    bookImageGetController
     } = require('../controllers/bookController')
 
-    router.get('/', createLibraryController)
+    router.get('/',fileUpLoader.fields([{'bookimage'}]) createLibraryController)
     router.get('/', allBookGetController)
     router.get('/:id', uniqueBookGetController)
+    router.get('/book-images', bookImageGetController)
 
     router.post('/bookentry', oneBookInsertController)
     router.post('/bookentry', manyBookInsertController)

@@ -7,12 +7,13 @@ const {
     uniqueUserGetController,
     userRegisterController,
     userLoginController,
-    
     userDeleteController,
-
+    userParmanentDeleteController,
     userUpdateController,
-    passwordResetController,
     addressUpdateController,
+    forgotPasswordController,
+    passwordResetController,
+    passwordUpdateController,
                 } = require('../controllers/userController')
 
     const Auth = require('../../middleware/auth')
@@ -27,12 +28,14 @@ const {
     router.post('/login', userLoginController)
 
     router.delete('/delete/:id', Auth, permission([librarian,admin,superAdmin]),userDeleteController)
-    router.delete('/delete-permanent/:id', Auth, permission([librarian,admin,superAdmin]),userDeleteController)
+    router.delete('/delete-permanent/:id', Auth, permission([librarian,admin,superAdmin]),userParmanentDeleteController)
     
     router.put('/update/:id', Auth, userUpdateController)
     router.put('/address-update/:id', Auth, addressUpdateController)
+    router.put('/forgot-password/:id', Auth, forgotPasswordController)
 
     router.put('/reset-password/:id', Auth, passwordResetController)
+    router.put('/password-update/:id', Auth, passwordUpdateController)
 
 
 module.exports =router

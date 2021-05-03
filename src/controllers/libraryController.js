@@ -4,8 +4,13 @@ const Library = require('../models/Book')
 
 const createLibraryController = async (req ,res)=>{
     try{
-        
-        const library = new Library(req.body)
+        console.log(req.files.bookImage[0].fileName)
+        const library = new Library({
+            ...req.body,
+            bookImage:req.files.bookImage[0].filename,
+            bookFile:req.files.bookFile[0].filename,
+             })
+
         let data = await library.save();
             res.status(201).json({
                 message: 'book added successfully',
@@ -93,6 +98,22 @@ const bookDeleteController = async (req ,res)=>{
     }
 }
 
+const bookImageGetController = async (req ,res)=>{
+    try{
+        const data = await Library.find().select('bookImage bookName');
+            res.json({
+             data
+            })
+
+    }catch(err){
+        res.status(500).json({
+            message : "server error",
+            err
+        })
+    }
+}
+
+
 module.exports = {
     createLibraryController,
     allBookGetController,
@@ -100,4 +121,5 @@ module.exports = {
     oneBookInsertController,
     manyBookInsertController,
     bookDeleteController,
+    bookImageGetController,
 }

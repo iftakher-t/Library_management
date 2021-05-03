@@ -143,6 +143,28 @@ const userLoginController = async (req,res)=>{
 
 const userDeleteController = async (req,res)=>{
     try{
+        const id = req.params.id
+        await User.findByIdAndUpdate(
+            {_id : id},
+            {
+                $set : {
+                    isDeleted : true
+                }
+            }
+            )
+       return  res.status(200).json({
+            message: 'user deleted temporary '
+        })
+    }catch(err){
+        res.status(500).json({
+            message : "server error",
+            err
+        })
+    }
+}
+
+const userParmanentDeleteController = async (req,res)=>{
+    try{
         const data = await User.delete({_id : req.params.id})
         res.status(200).json({
             result: data
@@ -297,15 +319,62 @@ const passwordResetController = async (req,res)=>{
     }
 }
 
+const passwordUpdateController = async (req,res)=>{
+    try{
+        const { id, oldPassword, newPassword , confirmNewPassword } = req.body
+        const query = {
+            _id : id,
+            isDeleted : false
+        }
+        const user = await User.findOne( query )
+        if(user){
+            const isValid = await bcrypt.compare(oldPassword, user.Password)
+
+        if( isValid ){
+                if(newPassword === confirmNewPassword){
+                    var hashPass = await bcrypt.hash(newPassword, 10)
+                await User.findOneAndUpdate(
+                {_id : id},
+                { $set :{
+                    password : hashPass
+                }
+                }
+            )
+                }else{
+                    res.json({
+                    message: 'new password and confirmNewPassword dose not match'
+                    })
+                }
+        
+            }else{
+                res.status(200).json({
+                    message: 'Password not match '
+                })
+            }
+        }else{
+            res.status(200).json({
+                message: 'user not found '
+            })
+        }
+    }catch(err){
+        res.status(500).json({
+            message : "server error",
+            err
+        })
+    }
+}
+
 module.exports = { 
     allUserGetController,
     paginationController,
     uniqueUserGetController,
     userRegisterController,
     userLoginController,
-    // adminController,
     userDeleteController,
+    userParmanentDeleteController,
     userUpdateController,
-    forgotPasswordController,addressUpdateController,
+    addressUpdateController,
+    forgotPasswordController,
     passwordResetController,
+    passwordUpdateController,
             }
