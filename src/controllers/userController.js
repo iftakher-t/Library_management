@@ -321,7 +321,8 @@ const passwordResetController = async (req,res)=>{
 
 const passwordUpdateController = async (req,res)=>{
     try{
-        const { id, oldPassword, newPassword , confirmNewPassword } = req.body
+        const id = req.params.id
+        const { oldPassword, newPassword , confirmNewPassword } = req.body
         const query = {
             _id : id,
             isDeleted : false
@@ -356,6 +357,9 @@ const passwordUpdateController = async (req,res)=>{
                 message: 'user not found '
             })
         }
+        res.status(200).json({
+            message: 'password updated successfully '
+        })
     }catch(err){
         res.status(500).json({
             message : "server error",
